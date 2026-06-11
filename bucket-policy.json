@@ -6,7 +6,7 @@
   "Effect":"Allow",
   "Principal":"*",
   "Action":"s3.GetObject",
-  "Resource":"arn:ws:s3:::hr-bucket"
+  "Resource":"arn:ws:s3:::hrconnect-bucket"
 }
 ]
 }
