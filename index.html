@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRConnect</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Layout */
+body {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background: #2f3e46;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    background: #52796f;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.sidebar button:hover {
+    background: #84a98c;
+}
+
+/* Main Content */
+.main {
+    flex: 1;
+    padding: 20px;
+    background: #f1f1f1;
+    overflow-y: auto;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+/* Cards */
+.card {
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Forms */
+input, select {
+    padding: 8px;
+    margin: 5px;
+    width: 200px;
+}
+
+button.action {
+    padding: 8px 12px;
+    background: #354f52;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.action:hover {
+    background: #52796f;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>HRConnect</h2>
+    <button onclick="showSection('dashboard')">Dashboard</button>
+    <button onclick="showSection('employees')">Employees</button>
+    <button onclick="showSection('leave')">Leave Requests</button>
+    <button onclick="showSection('payroll')">Payroll</button>
+    <button onclick="showSection('performance')">Performance</button>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="section active">
+        <h1>Dashboard</h1>
+        <div class="card">Total Employees: <span id="empCount">0</span></div>
+        <div class="card">Pending Leaves: <span id="leaveCount">0</span></div>
+    </div>
+
+    <!-- Employees -->
+    <div id="employees" class="section">
+        <h1>Employee Records</h1>
+
+        <input type="text" id="empName" placeholder="Employee Name">
+        <input type="text" id="empDept" placeholder="Department">
+        <button class="action" onclick="addEmployee()">Add</button>
+
+        <div id="employeeList"></div>
+    </div>
+
+    <!-- Leave -->
+    <div id="leave" class="section">
+        <h1>Leave Requests</h1>
+
+        <input type="text" id="leaveName" placeholder="Employee Name">
+        <input type="date" id="leaveDate">
+        <button class="action" onclick="addLeave()">Request Leave</button>
+
+        <div id="leaveList"></div>
+    </div>
+
+    <!-- Payroll -->
+    <div id="payroll" class="section">
+        <h1>Payroll</h1>
+
+        <input type="text" id="payName" placeholder="Employee Name">
+        <input type="number" id="salary" placeholder="Salary">
+        <button class="action" onclick="processPayroll()">Process</button>
+
+        <div id="payrollList"></div>
+    </div>
+
+    <!-- Performance -->
+    <div id="performance" class="section">
+        <h1>Performance Reviews</h1>
+
+        <input type="text" id="perfName" placeholder="Employee Name">
+        <select id="rating">
+            <option>Excellent</option>
+            <option>Good</option>
+            <option>Average</option>
+            <option>Needs Improvement</option>
+        </select>
+        <button class="action" onclick="addReview()">Add Review</button>
+
+        <div id="performanceList"></div>
+    </div>
+
+</div>
+
+<script>
+// Navigation
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+}
+
+/* EMPLOYEES */
+let employeeCount = 0;
+
+function addEmployee() {
+    let name = document.getElementById("empName").value;
+    let dept = document.getElementById("empDept").value;
+
+    if (!name || !dept) return;
+
+    employeeCount++;
+
+    let div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `${name} - ${dept}`;
+
+    document.getElementById("employeeList").appendChild(div);
+    document.getElementById("empCount").innerText = employeeCount;
+
+    document.getElementById("empName").value = "";
+    document.getElementById("empDept").value = "";
+}
+
+/* LEAVE */
+let leaveCount = 0;
+
+function addLeave() {
+    let name = document.getElementById("leaveName").value;
+    let date = document.getElementById("leaveDate").value;
+
+    if (!name || !date) return;
+
+    leaveCount++;
+
+    let div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `${name} requested leave on ${date}`;
+
+    document.getElementById("leaveList").appendChild(div);
+    document.getElementById("leaveCount").innerText = leaveCount;
+
+    document.getElementById("leaveName").value = "";
+    document.getElementById("leaveDate").value = "";
+}
+
+/* PAYROLL */
+function processPayroll() {
+    let name = document.getElementById("payName").value;
+    let salary = document.getElementById("salary").value;
+
+    if (!name || !salary) return;
+
+    let div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `${name} - Salary Processed: $${salary}`;
+
+    document.getElementById("payrollList").appendChild(div);
+
+    document.getElementById("payName").value = "";
+    document.getElementById("salary").value = "";
+}
+
+/* PERFORMANCE */
+function addReview() {
+    let name = document.getElementById("perfName").value;
+    let rating = document.getElementById("rating").value;
+
+    if (!name) return;
+
+    let div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `${name} - Rating: ${rating}`;
+
+    document.getElementById("performanceList").appendChild(div);
+
+    document.getElementById("perfName").value = "";
+}
+</script>
+
+</body>
+</html>
