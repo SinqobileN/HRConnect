@@ -1,0 +1,38 @@
+version: 0.2
+
+env:
+  variables:
+   BUILD_ENV: "production"
+   APP_NAME: "hrconnect-app"
+   AWS_DEFAULT_REGION: "us-east-2"
+    S3_BUCKET: hrconnect-bucket   
+
+phases:
+
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing HRConnect "
+
+  pre_build:
+    commands:
+      - echo "Running HRConnect."
+      - ls -l
+      - test -f index.html || (echo "index.html not found!" && exit 1)
+
+  build:
+    commands:
+      - echo "Build HRConnect frontend applivation"
+      - echo "Since this is a static site, no compilation needed"
+
+  post_build:
+    commands:
+      - echo "Deploying HRConnect to S3..."
+      - aws s3 sync . s3://$S3_BUCKET --delete
+      - echo "Deployment completed"
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
