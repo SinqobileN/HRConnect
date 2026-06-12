@@ -2,10 +2,7 @@ version: 0.2
 
 env:
   variables:
-   BUILD_ENV: "production"
-   APP_NAME: "hrconnect-app"
-   AWS_DEFAULT_REGION: "us-east-2"
-    S3_BUCKET: hrconnect-295152032847  
+    
 
 phases:
 
