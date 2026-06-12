@@ -1,32 +1,24 @@
 version: 0.2
-
-env:
-  variables:
+ 
 phases:
-
   install:
-    runtime-versions:
-      nodejs: 18
     commands:
-      - echo "Installing HRConnect "
-
+      - echo "Starting build process..."
+ 
   pre_build:
     commands:
-      - echo "Running HRConnect."
+      - echo "Validating project files..."
       - ls -l
       - test -f index.html || (echo "index.html not found!" && exit 1)
-
+ 
   build:
     commands:
-      - echo "Build HRConnect frontend applivation"
-      - echo "Since this is a static site, no compilation needed"
-
+      - echo "No build step required for static HTML site"
+ 
   post_build:
     commands:
-      - echo "Deploying HRConnect to S3..."
-      - aws s3 sync . s3://$S3_BUCKET --delete
-      - echo "Deployment completed"
-
+      - echo "Build completed successfully"
+ 
 artifacts:
   files:
     - '**/*'
