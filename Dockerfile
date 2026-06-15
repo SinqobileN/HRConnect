@@ -1,14 +1,5 @@
-# Use official Nginx image
-FROM nginx:alpine
-
-# Remove default Nginx website
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy HRConnect files into container
-COPY . /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY app.jar /app/app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/app.jar"] 
